@@ -9,13 +9,28 @@
 
   :duct-talk.handler.stories/upvote
   {:db #ig/ref :duct.database/sql}
+
+  :duct-talk.handler.comments/list
+  {:db #ig/ref :duct.database/sql}
+
+  :duct-talk.handler.comments/submit
+  {:db #ig/ref :duct.database/sql}
+
+  :duct-talk.handler.comments/upvote
+  {:db #ig/ref :duct.database/sql}
   
   [:duct.migrator.ragtime/sql :migrations/init-stories]
   {:up   [#duct/resource "migrations/init-stories.up.sql"]
    :down [#duct/resource "migrations/init-stories.down.sql"]}
 
+  [:duct.migrator.ragtime/sql :migrations/init-comments]
+  {:up   [#duct/resource "migrations/init-comments.up.sql"]
+   :down [#duct/resource "migrations/init-comments.down.sql"]}
+
   :duct.migrator/ragtime
-  {:migrations [#ig/ref :migrations/init-stories]}}
+  {:strategy :rebase
+   :migrations [#ig/ref :migrations/init-stories
+                #ig/ref :migrations/init-comments]}}
   
 
  :duct.profile/dev   #duct/include "dev"
@@ -25,7 +40,11 @@
  :duct.module/ataraxy
  {"/" {:get [:stories/index] 
        "stories" {:post [:stories/submit]
-                  [:post "/" ^int id] [:stories/upvote id]}}}
+                  ["/" ^int story-id] {[:post "/votes"] [:stories/upvote story-id]
+                                       "/comments" {:get [:comments/list story-id]
+                                                    :post [:comments/submit story-id]
+                                                    [:post "/" ^int comment-id "/votes"] [:comments/upvote comment-id]}}}}}
+                                              
  :duct.module/logging {}
  :duct.module.web/api {}
  :duct.module/sql {}}

@@ -1,22 +1,24 @@
-(ns duct-talk.handler.stories
+(ns duct-talk.handler.comments
   (:require [ataraxy.core :as ataraxy]
             [ataraxy.response :as response] 
             [integrant.core :as ig]
-            [duct-talk.boundaries.stories :as stories]))
+            [duct-talk.boundaries.comments :as comments]))
 
-(defmethod ig/init-key ::index
+(defmethod ig/init-key ::list
   [_ {:keys [db]}]
-  (fn [_]
-    [::response/ok (stories/index db)]))
+  (fn [{{id :story-id} :route-params}]
+    [::response/ok (comments/get-list db id)]))
 
 (defmethod ig/init-key ::submit
   [_ {:keys [db]}]
-  (fn [{{:keys [title link]} :body-params}]
-    (stories/create! db title link)
+  (fn [{{text :comment} :body-params
+        {id :story-id} :route-params}]
+    (comments/create! db id text)
     [::response/ok "submitted"]))
 
 (defmethod ig/init-key ::upvote
   [_ {:keys [db]}]
   (fn [{{id :story-id} :route-params}]
-    (stories/upvote! db id)
+    (comments/upvote! db id)
     [::response/ok "voted"]))
+
