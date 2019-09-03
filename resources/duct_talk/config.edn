@@ -1,18 +1,23 @@
 {:duct.profile/base
  {:duct.core/project-ns duct-talk
 
-  :duct.router/ataraxy
-  {:routes {[:get "/example"] [:duct-talk.handler/example]}}
+  :duct-talk.handler.stories/index
+  {:db #ig/ref :duct.database/sql}
 
-  :duct-talk.handler/example
+  :duct-talk.handler.stories/submit
+  {:db #ig/ref :duct.database/sql}
+
+  :duct-talk.handler.stories/upvote
   {:db #ig/ref :duct.database/sql}}
 
  :duct.profile/dev   #duct/include "dev"
  :duct.profile/local #duct/include "local"
  :duct.profile/prod  {}
 
+ :duct.module/ataraxy
+ {"/" {:get [:stories/index] 
+       "stories" {:post [:stories/submit]
+                  [:post "/" ^int id] [:stories/upvote id]}}}
  :duct.module/logging {}
- :duct.module.web/api
- {}
- :duct.module/sql
- {}}
+ :duct.module.web/api {}
+ :duct.module/sql {}}
