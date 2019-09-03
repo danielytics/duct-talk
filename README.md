@@ -1,6 +1,8 @@
 # duct-talk
 
-FIXME: description
+Sample duct project used during Clojure Ireland talk about Duct and Integrant.
+
+Implements a HTTP API for a basic Hacker News clone.
 
 ## Developing
 
