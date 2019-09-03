@@ -1,0 +1,6 @@
+CREATE TABLE stories (
+  id INTEGER PRIMARY KEY,
+  title TEXT NOT NULL,
+  url TEXT NOT NULL,
+  votes INTEGER DEFAULT 0
+);

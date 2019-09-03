@@ -8,7 +8,15 @@
   {:db #ig/ref :duct.database/sql}
 
   :duct-talk.handler.stories/upvote
-  {:db #ig/ref :duct.database/sql}}
+  {:db #ig/ref :duct.database/sql}
+  
+  [:duct.migrator.ragtime/sql :migrations/init-stories]
+  {:up   [#duct/resource "migrations/init-stories.up.sql"]
+   :down [#duct/resource "migrations/init-stories.down.sql"]}
+
+  :duct.migrator/ragtime
+  {:migrations [#ig/ref :migrations/init-stories]}}
+  
 
  :duct.profile/dev   #duct/include "dev"
  :duct.profile/local #duct/include "local"
