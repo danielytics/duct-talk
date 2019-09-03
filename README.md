@@ -69,4 +69,4 @@ lein test
 
 ## Legal
 
-Copyright © 2019 FIXME
+See [LICENSE](LICENSE).
